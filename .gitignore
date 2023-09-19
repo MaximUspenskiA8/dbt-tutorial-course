@@ -2,4 +2,4 @@
 .user.yml
 /logs
 logs
-.vscode
+.vscode/settings.json
