@@ -2,15 +2,26 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
+<<<<<<< HEAD
 name: 'my_new_project'
+=======
+name: 'lessons'
+>>>>>>> 2c53728eac42bc5a326eae451a3c1b82c40a2ea7
 version: '1.0.0'
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
+<<<<<<< HEAD
 profile: 'default'
 
 # These configurations specify where dbt should look for different types of files.
 # The `source-paths` config, for example, states that models in this project can be
+=======
+profile: 'lessons'
+
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+>>>>>>> 2c53728eac42bc5a326eae451a3c1b82c40a2ea7
 # found in the "models/" directory. You probably won't need to change these!
 model-paths: ["models"]
 analysis-paths: ["analyses"]
@@ -19,7 +30,10 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
+<<<<<<< HEAD
 target-path: "target"  # directory which will store compiled SQL files
+=======
+>>>>>>> 2c53728eac42bc5a326eae451a3c1b82c40a2ea7
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
@@ -28,6 +42,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
+<<<<<<< HEAD
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
@@ -36,3 +51,26 @@ models:
     # Applies to all files under models/example/
     example:
       materialized: view
+=======
+# In this example config, we tell dbt to build all models in the example/
+# directory as views. These settings can be overridden in the individual model
+# files using the `{{ config(...) }}` macro.
+models:
+  lessons:
+    +materialized: table
+    +persist_docs:
+      relation: true
+      columns: true
+    +hours_to_expiration: 168
+
+tests:
+  lessons:
+    +severity: warn
+
+seeds:
+  lessons:
+    +persist_docs:
+      relation: true
+      columns: true
+
+>>>>>>> 2c53728eac42bc5a326eae451a3c1b82c40a2ea7
