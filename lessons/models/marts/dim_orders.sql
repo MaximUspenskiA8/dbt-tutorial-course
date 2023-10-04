@@ -22,7 +22,10 @@ order_items_measures as (
 		sum(item_sale_price) as total_sale_price,
 		sum(product_cost) as total_product_cost,
 		sum(item_profit) as total_profit,
-		sum(item_discount) as total_discount
+		sum(item_discount) as total_discount,
+		{% for department in dbt_utils.get_column_values(table=ref('int_ecommerce__order_items_products'), column='product_department') %}
+		SUM(IF(product_department = '{{ department }}', item_sale_price, 0)) as total_sold_{{ department.lower() }}swear{{ "," if not loop.last }}
+		{%- endfor %}
 
 	from order_items_products
 
@@ -34,6 +37,7 @@ final as (
 		o.order_id,
 		o.user_id,
 		o.created_at as order_created_at,
+		{{ is_weekend('o.created_at') }} as order_was_created_on_weekend,
 		o.returned_at as order_returned_at,
 		o.shipped_at as order_shipped_at,
 		o.delivered_at as order_delivered_at,
@@ -43,7 +47,11 @@ final as (
 		oim.total_product_cost,
 		oim.total_profit,
 		oim.total_discount,
-		TIMESTAMP_DIFF(o.created_at, foc.first_order_created_at, DAY) AS days_since_first_order
+		TIMESTAMP_DIFF(o.created_at, foc.first_order_created_at, DAY) AS days_since_first_order,
+
+		{%- for department in departments %}
+		total_sold_{{ department.lower() }}swear{{ "," if not loop.last }}
+		{%- endfor %}
 
 	from orders o
 	left join order_items_measures oim
